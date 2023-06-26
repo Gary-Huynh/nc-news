@@ -27,3 +27,15 @@ exports.selectSpecificArticle = (article_id)=>{
 
 
 }
+
+exports.selectArticleComments = (article_id)=>{
+    return db.query("SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC",[article_id])
+    .then((comments)=>{
+
+        if(!comments.rows[0]){
+
+            return Promise.reject({status:404,msg:(`No article with id ${article_id} found`)})
+        }
+        return comments.rows
+    })
+}

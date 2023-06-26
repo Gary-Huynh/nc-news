@@ -1,4 +1,4 @@
-const { selectAllTopics, selectAllEndpoints, selectSpecificArticle } = require("./model")
+const { selectAllTopics, selectAllEndpoints, selectSpecificArticle, selectArticleComments } = require("./model")
 const endpoints = require('./endpoints')
 
 
@@ -26,6 +26,16 @@ exports.getSpecificArticle = (req,res,next)=>{
     selectSpecificArticle(req.params.article_id)
     .then((article)=>{
         res.status(200).send({article})
+    })
+    .catch(next)
+
+}
+
+exports.getArticleComments = (req,res,next)=>{
+
+    selectArticleComments(req.params.article_id)
+    .then((comments)=>{
+        res.status(200).send({comments})
     })
     .catch(next)
 
