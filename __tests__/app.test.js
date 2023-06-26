@@ -6,7 +6,7 @@ const request = require('supertest')
 
 
 afterAll(() => {
-    db.end()
+    return db.end()
    })
 
 beforeEach(() => {
@@ -20,6 +20,7 @@ describe("GET /api/topics",()=>{
 
         return request(app).get('/api/topics').expect(200)
         .then(({body})=>{
+            expect(body.allTopics.length).toBeGreaterThan(0)
             body.allTopics.forEach((topic)=>{
                 expect(topic).toHaveProperty("slug", expect.any(String));
                 expect(topic).toHaveProperty("description", expect.any(String));
@@ -27,12 +28,12 @@ describe("GET /api/topics",()=>{
             })
         })
     })
+})
 
-    test("404: invalid path should return a 404 not found", ()=>{
-        
+describe("404: Not Found",()=>{
+
+    test("404: invalid path should return a 404 not found", ()=>{  
+
         return request(app).get('/api/topicss').expect(404)
     })
-
-
-
 })
