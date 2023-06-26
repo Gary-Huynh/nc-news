@@ -92,10 +92,11 @@ describe("404: Not Found",()=>{
 
 describe("GET /api/articles",()=>{
 
-    test("200: /api/articles should return an object with all current articles",()=>{
+    test("200: /api/articles should return an object with all current articles sorted by date in descending order",()=>{
         return request(app).get('/api/articles').expect(200)
         .then(({body})=>{
-            expect(body.articles.length).toBeGreaterThan(0)
+            expect(body.articles.length).toBe(13)
+            expect(body.articles).toBeSortedBy("created_at",{descending:true})
            body.articles.forEach((article)=>{
             expect(article).toHaveProperty("author", expect.any(String));
             expect(article).toHaveProperty("title", expect.any(String));
@@ -109,5 +110,31 @@ describe("GET /api/articles",()=>{
         })
         })
     })
+
+})
+
+describe("GET /api/articles?sort_by=votes / article_id/created_at/comment_count",()=>{
+
+    test("200: /api/articles?sort_by=article_id should return all articles sorted by article_id in descending order",()=>{
+
+        return request(app).get("/api/articles?sort_by=article_id").expect(200)
+        .then(({body})=>{
+            expect(body.articles).toBeSortedBy("article_id",{descending:true})
+        })
+    })
+    test("200: /api/articles?sort_by=votes should return all articles sorted by votes in descending order",()=>{
+
+        return request(app).get("/api/articles?sort_by=votes").expect(200)
+        .then(({body})=>{
+            expect(body.articles).toBeSortedBy("votes",{descending:true})
+        })
+    })
+    test("400: /api/articles?sort_by=banana should return a 400 bad request as it is not a valid sort_by",()=>{
+        return request(app).get("/api/articles?sort_by=banana").expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request invalid sort_by")
+        })
+    })
+
 
 })

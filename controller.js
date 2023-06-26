@@ -32,8 +32,10 @@ exports.getSpecificArticle = (req,res,next)=>{
 }
 
 exports.getAllArticles = (req, res, next)=>{
-    selectAllArticles()
+   const{sort_by} = req.query
+    selectAllArticles(sort_by)
     .then((articles)=>{
         res.status(200).send({articles})
     })
+    .catch(next)
 }
