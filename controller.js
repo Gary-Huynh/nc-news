@@ -1,5 +1,5 @@
-const { selectAllTopics } = require("./model")
-
+const { selectAllTopics, selectAllEndpoints } = require("./model")
+const endpoints = require('./endpoints')
 
 
 
@@ -13,5 +13,10 @@ exports.getAllTopics = (req, res, next)=>{
 
     })
     .catch(next)
+}
+exports.getAllEndpoints = (req, res, next)=>{
+ 
+        res.status(200).send(endpoints)
 
 }
+
