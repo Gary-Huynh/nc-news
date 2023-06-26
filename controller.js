@@ -1,4 +1,4 @@
-const { selectAllTopics, selectAllEndpoints } = require("./model")
+const { selectAllTopics, selectAllEndpoints, selectSpecificArticle } = require("./model")
 const endpoints = require('./endpoints')
 
 
@@ -20,3 +20,13 @@ exports.getAllEndpoints = (req, res, next)=>{
 
 }
 
+
+
+exports.getSpecificArticle = (req,res,next)=>{
+    selectSpecificArticle(req.params.article_id)
+    .then((article)=>{
+        res.status(200).send({article})
+    })
+    .catch(next)
+
+}
