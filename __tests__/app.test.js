@@ -36,7 +36,7 @@ describe("GET /api/articles/:article_id",()=>{
         return request(app).get('/api/articles/2').expect(200)
         .then(({body})=>{
             expect(body.article.length).toBeGreaterThan(0)
-            expect(body.article[0]).toHaveProperty("article_id", expect.any(Number));
+            expect(body.article[0].article_id).toBe(2)
             expect(body.article[0]).toHaveProperty("title", expect.any(String));
             expect(body.article[0]).toHaveProperty("topic", expect.any(String));
             expect(body.article[0]).toHaveProperty("author", expect.any(String));
