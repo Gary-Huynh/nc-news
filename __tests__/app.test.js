@@ -88,3 +88,26 @@ describe("404: Not Found",()=>{
         return request(app).get('/api/topicss').expect(404)
     })
 })
+
+
+describe("GET /api/articles",()=>{
+
+    test("200: /api/articles should return an object with all current articles",()=>{
+        return request(app).get('/api/articles').expect(200)
+        .then(({body})=>{
+            expect(body.articles.length).toBeGreaterThan(0)
+           body.articles.forEach((article)=>{
+            expect(article).toHaveProperty("author", expect.any(String));
+            expect(article).toHaveProperty("title", expect.any(String));
+            expect(article).toHaveProperty("article_id", expect.any(Number));
+            expect(article).toHaveProperty("topic", expect.any(String));
+            expect(article).toHaveProperty("created_at", expect.any(String));
+            expect(article).toHaveProperty("votes", expect.any(Number));
+            expect(article).toHaveProperty("article_img_url", expect.any(String));
+            expect(article).toHaveProperty("comment_count", expect.any(String));
+            expect(article).not.toHaveProperty("body")
+        })
+        })
+    })
+
+})
