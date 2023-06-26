@@ -1,5 +1,5 @@
 const express = require('express')
-const { getAllTopics, getSpecificArticle } = require('./controller')
+const { getAllTopics, getSpecificArticle, getAllEndpoints } = require('./controller')
 const { handleServerErrors, handlePsqlErrors, handleCustomErrors } = require('./errors/errors')
 
 const app = express()
@@ -9,6 +9,9 @@ const app = express()
 app.get('/api/topics', getAllTopics)
 
 app.get('/api/articles/:article_id',getSpecificArticle)
+
+
+app.get('/api/', getAllEndpoints)
 
 
 
@@ -33,3 +36,4 @@ app.use((err, req, res, next) => {
 
 
 module.exports = app
+
