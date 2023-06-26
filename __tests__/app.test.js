@@ -30,6 +30,25 @@ describe("GET /api/topics",()=>{
     })
 })
 
+describe("GET /api/",()=>{
+
+    test("200: /api/ should return an object with descriptions of all valid endpoints",()=>{
+
+        return request(app).get('/api/').expect(200)
+        .then(({body})=>{
+            expect(Object.keys(body).length).toBeGreaterThan(0)
+            for(const keys in body){
+                expect(typeof body[keys].description).toBe("string")
+                expect(Array.isArray(body[keys].queries)).toBe(true)
+                expect(typeof body[keys].format).not.toBe("null")
+                expect(typeof body[keys].exampleResponse).toBe("object")
+            }
+
+        })
+    })
+})
+
+
 describe("404: Not Found",()=>{
 
     test("404: invalid path should return a 404 not found", ()=>{  
