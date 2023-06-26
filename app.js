@@ -13,7 +13,7 @@ app.get('/api/articles/:article_id',getSpecificArticle)
 
 app.get('/api/', getAllEndpoints)
 
-
+app.get('/api/articles/:article_id/comments')
 
 
 

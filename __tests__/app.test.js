@@ -88,3 +88,15 @@ describe("404: Not Found",()=>{
         return request(app).get('/api/topicss').expect(404)
     })
 })
+
+// describe("GET /api/articles/:article_id/comments",()=>{
+    
+//     test("200: /api/articles/:article_id/comments should get all comments for a specific article",()=>{
+
+//         return request(app).get('/api/articles/1/comments').expect(200)
+//         .then(({body})=>{
+//             console.log(body)
+//         })
+
+//     })
+// })
