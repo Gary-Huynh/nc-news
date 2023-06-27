@@ -90,3 +90,13 @@ exports.deleteSelectedComment = (comment_id)=>{
         return result.rows[0]
     })
 }
+
+exports.selectAllUsers = ()=>{
+
+
+return db.query("SELECT * FROM users;")
+.then((allUsers)=>{
+    return allUsers.rows
+})
+
+}
