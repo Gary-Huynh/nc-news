@@ -1,6 +1,6 @@
 const express = require('express')
 
-const { getAllTopics, getSpecificArticle, getAllEndpoints, getAllArticles, getArticleComments, postArticleComment, patchArticleVote  } = require('./controller')
+const { getAllTopics, getSpecificArticle, getAllEndpoints, getAllArticles, getArticleComments, postArticleComment, patchArticleVote, deleteComment  } = require('./controller')
 
 const { handleServerErrors, handlePsqlErrors, handleCustomErrors } = require('./errors/errors')
 
@@ -19,7 +19,10 @@ app.get('/api/articles/:article_id/comments',getArticleComments)
 app.get('/api/articles',getAllArticles)
 
 app.patch("/api/articles/:article_id",patchArticleVote)
+
 app.post("/api/articles/:article_id/comments",postArticleComment)
+
+app.delete('/api/comments/:comment_id', deleteComment)
 
 
 app.use((err, req, res, next) => {

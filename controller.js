@@ -1,6 +1,6 @@
 
 
-const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments, createArticleComment, updateArticleVote  } = require("./model")
+const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments, createArticleComment, updateArticleVote, deleteSelectedComment  } = require("./model")
 
 
 const endpoints = require('./endpoints')
@@ -66,8 +66,17 @@ const commentBody = req.body.body
 
     Promise.all([checkArticleExists(article_id),createArticleComment(article_id, username, commentBody)])
     .then((returnedComment)=>{
-        comment = returnedComment[1]
+        const comment = returnedComment[1]
         res.status(201).send({comment})
+    })
+    .catch(next)
+}
+
+exports.deleteComment = (req, res, next)=>{
+    const comment_id = req.params.comment_id
+    deleteSelectedComment(comment_id)
+    .then(()=>{
+        res.status(204).send()
     })
     .catch(next)
 }

@@ -3,6 +3,7 @@ const db = require('../db/connection')
 const seed = require('../db/seeds/seed')
 const data = require('../db/data/test-data/index')
 const request = require('supertest')
+const { expect } = require('@jest/globals')
 afterAll(() => {
     return db.end()
    })
@@ -268,4 +269,25 @@ describe("POST /api/articles/:article_id/comments",()=>{
             expect(body.msg).toBe("Bad Request")
         })
     })
+})
+
+
+describe("DELETE /api/comments/:comment_id",()=>{
+
+    test("204: /api/comments/:comment_id should delete a comment if given valid comment_id",()=>{
+        return request(app).delete("/api/comments/5").expect(204)
+    })
+    test("404: /api/comments/:comment_id should return a 404 if commend_id is a valid number but does not have a corresponding comment",()=>{
+        return request(app).delete("/api/comments/420").expect(404)
+        .then(({body})=>{
+            expect(body.msg).toBe("Not Found")
+        })
+    })
+    test("400: /api/comments/:comment_id should return a 400 if invalid comment_id is given",()=>{
+        return request(app).delete("/api/comments/banana").expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+
 })
