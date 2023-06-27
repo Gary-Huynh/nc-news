@@ -283,7 +283,7 @@ describe("DELETE /api/comments/:comment_id",()=>{
             expect(body.msg).toBe("Not Found")
         })
     })
-    test("404: /api/comments/:comment_id should return a 400 if invalid comment_id is given",()=>{
+    test("400: /api/comments/:comment_id should return a 400 if invalid comment_id is given",()=>{
         return request(app).delete("/api/comments/banana").expect(400)
         .then(({body})=>{
             expect(body.msg).toBe("Bad Request")
