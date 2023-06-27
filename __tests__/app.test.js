@@ -174,16 +174,16 @@ describe("PATCH /api/articles/:article_id",()=>{
     test("200 /api/articles/:article_id should be able to change the vote total of an article",()=>{
        return request(app).patch("/api/articles/2").send({inc_votes: 25}).expect(200)
         .then(({body})=>{
-            expect(body[0].article_id).toBe(2)
-            expect(body[0].votes).toBe(25)
+            expect(body.article[0].article_id).toBe(2)
+            expect(body.article[0].votes).toBe(25)
         })
 
     })
     test("200 /api/articles/:article_id should be able to change the vote total of an article even if negative",()=>{
         return request(app).patch("/api/articles/2").send({inc_votes: -200}).expect(200)
          .then(({body})=>{
-             expect(body[0].article_id).toBe(2)
-             expect(body[0].votes).toBe(-200)
+             expect(body.article[0].article_id).toBe(2)
+             expect(body.article[0].votes).toBe(-200)
          })
  
      })
