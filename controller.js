@@ -41,8 +41,8 @@ exports.getArticleComments = (req,res,next)=>{
     .catch(next)
 }
 exports.getAllArticles = (req, res, next)=>{
-   const{sort_by} = req.query
-    selectAllArticles(sort_by)
+   const{sort_by,topic, order} = req.query
+    selectAllArticles(sort_by,topic,order)
     .then((articles)=>{
         res.status(200).send({articles})
     })
