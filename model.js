@@ -69,3 +69,13 @@ exports.updateArticleVote = (article_id,votes)=>{
  })
 })
 }
+exports.createArticleComment = (article_id,username,commentBody)=>{
+
+    const query = 'INSERT INTO comments (author,body,article_id) VALUES ($1,$2,$3) RETURNING*;'
+
+    return db.query(query, [username, commentBody, article_id])
+    .then((newComment)=>{
+
+       return newComment.rows
+    })
+}
