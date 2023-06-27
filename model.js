@@ -1,3 +1,4 @@
+
 const db = require('./db/connection')
 
 
@@ -52,4 +53,19 @@ exports.selectArticleComments = (article_id)=>{
         return comments.rows
 
     })
+}
+
+exports.updateArticleVote = (article_id,votes)=>{
+ return db.query("SELECT votes FROM articles WHERE article_id = $1;",[article_id])
+ .then((body)=>{
+    if(typeof votes !== "number"){
+        return Promise.reject({status:400, msg:"Bad Request"})
+    }
+ const newVotes = body.rows[0].votes + votes
+
+ return db.query("UPDATE articles SET votes = $1 WHERE article_id = $2 RETURNING *;",[newVotes,article_id])
+ .then((updatedArticle)=>{
+    return updatedArticle.rows
+ })
+})
 }

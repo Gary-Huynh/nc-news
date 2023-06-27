@@ -1,6 +1,6 @@
 
 
-const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments } = require("./model")
+const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments, updateArticleVote } = require("./model")
 
 const endpoints = require('./endpoints')
 
@@ -43,6 +43,14 @@ exports.getAllArticles = (req, res, next)=>{
     selectAllArticles(sort_by)
     .then((articles)=>{
         res.status(200).send({articles})
+    })
+    .catch(next)
+}
+
+exports.patchArticleVote = (req, res, next)=>{
+    updateArticleVote(req.params.article_id,req.body.inc_votes)
+    .then((body)=>{
+        res.status(200).send(body)
     })
     .catch(next)
 }

@@ -3,6 +3,7 @@ const db = require('../db/connection')
 const seed = require('../db/seeds/seed')
 const data = require('../db/data/test-data/index')
 const request = require('supertest')
+const { expect } = require('@jest/globals')
 
 
 afterAll(() => {
@@ -168,4 +169,25 @@ describe("GET /api/articles?sort_by=votes / article_id/created_at/comment_count"
             expect(body.msg).toBe("Bad Request invalid sort_by")
         })
     })
+})
+
+
+describe("PATCH /api/articles/:article_id",()=>{
+
+    test("200 /api/articles/:article_id should be able to change the vote total of an article",()=>{
+       return request(app).patch("/api/articles/2").send({inc_votes: 25}).expect(200)
+        .then(({body})=>{
+            expect(body[0].article_id).toBe(2)
+            expect(body[0].votes).toBe(25)
+        })
+
+    })
+    test("400 /api/articles/:article_id when given invalid body should return 400 bad request",()=>{
+        return request(app).patch("/api/articles/2").send({potato:26}).expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+
+
 })
