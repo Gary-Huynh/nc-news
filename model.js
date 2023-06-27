@@ -65,7 +65,8 @@ exports.updateArticleVote = (article_id,votes)=>{
 
  return db.query("UPDATE articles SET votes = $1 WHERE article_id = $2 RETURNING *;",[newVotes,article_id])
  .then((updatedArticle)=>{
-    return updatedArticle.rows
+    // console.log(updatedArticle.rows[0],"here")
+    return updatedArticle.rows[0]
  })
 })
 }

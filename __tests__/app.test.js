@@ -175,16 +175,17 @@ describe("PATCH /api/articles/:article_id",()=>{
     test("200 /api/articles/:article_id should be able to change the vote total of an article",()=>{
        return request(app).patch("/api/articles/2").send({inc_votes: 25}).expect(200)
         .then(({body})=>{
-            expect(body.article[0].article_id).toBe(2)
-            expect(body.article[0].votes).toBe(25)
+
+            expect(body.article.article_id).toBe(2)
+            expect(body.article.votes).toBe(25)
         })
 
     })
     test("200 /api/articles/:article_id should be able to change the vote total of an article even if negative",()=>{
         return request(app).patch("/api/articles/2").send({inc_votes: -200}).expect(200)
          .then(({body})=>{
-             expect(body.article[0].article_id).toBe(2)
-             expect(body.article[0].votes).toBe(-200)
+             expect(body.article.article_id).toBe(2)
+             expect(body.article.votes).toBe(-200)
          })
  
      })
@@ -222,10 +223,10 @@ describe("POST /api/articles/:article_id/comments",()=>{
         }
         return request(app).post("/api/articles/4/comments").send(newComment).expect(201)
         .then(({body})=>{
-            expect(body.comment[0].comment_id).toBe(19)
-            expect(body.comment[0].author).toBe("rogersop")
-            expect(body.comment[0].body).toBe('wow this article shows the REAL truth that THE MAN is trying to hide from us')
-            expect(body.comment[0].article_id).toBe(4)
+            expect(body.comment.comment_id).toBe(19)
+            expect(body.comment.author).toBe("rogersop")
+            expect(body.comment.body).toBe('wow this article shows the REAL truth that THE MAN is trying to hide from us')
+            expect(body.comment.article_id).toBe(4)
         })
     })
 
