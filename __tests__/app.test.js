@@ -3,7 +3,6 @@ const db = require('../db/connection')
 const seed = require('../db/seeds/seed')
 const data = require('../db/data/test-data/index')
 const request = require('supertest')
-const { expect } = require('@jest/globals')
 afterAll(() => {
     return db.end()
    })
@@ -39,17 +38,18 @@ describe("GET /api/topics",()=>{
 describe("GET /api/articles/:article_id",()=>{
 
     test("200: should return the article with the specified id",()=>{
-        return request(app).get('/api/articles/2').expect(200)
+        return request(app).get('/api/articles/5').expect(200)
         .then(({body})=>{
             expect(body.article.length).toBeGreaterThan(0)
-            expect(body.article[0].article_id).toBe(2)
+            expect(body.article[0].article_id).toBe(5)
             expect(body.article[0]).toHaveProperty("title", expect.any(String));
             expect(body.article[0]).toHaveProperty("topic", expect.any(String));
             expect(body.article[0]).toHaveProperty("author", expect.any(String));
             expect(body.article[0]).toHaveProperty("body", expect.any(String));
             expect(body.article[0]).toHaveProperty("created_at", expect.any(String));
             expect(body.article[0]).toHaveProperty("votes", expect.any(Number));
-            expect(body.article[0]).toHaveProperty("article_img_url", expect.any(String)); 
+            expect(body.article[0]).toHaveProperty("article_img_url", expect.any(String));
+            expect(body.article[0]).toHaveProperty("comment_count", expect.any(String));  
         })
     })
     test("400: invalid article id should return bad request",()=>{
