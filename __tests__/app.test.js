@@ -4,7 +4,6 @@ const seed = require('../db/seeds/seed')
 const data = require('../db/data/test-data/index')
 const request = require('supertest')
 
-
 afterAll(() => {
     return db.end()
    })
@@ -168,4 +167,64 @@ describe("GET /api/articles?sort_by=votes / article_id/created_at/comment_count"
             expect(body.msg).toBe("Bad Request invalid sort_by")
         })
     })
+})
+
+describe("POST /api/articles/:article_id/comments",()=>{
+
+    test("201 /api/articles/:article_id/comments should add a comment about a specific article as long as properties are correct",()=>{
+
+        const newComment = {
+            username: "rogersop",
+            body: "wow this article shows the REAL truth that THE MAN is trying to hide from us"
+        }
+        return request(app).post("/api/articles/4/comments").send(newComment).expect(201)
+        .then(({body})=>{
+            expect(body.comment[0].comment_id).toBe(19)
+            expect(body.comment[0].author).toBe("rogersop")
+            expect(body.comment[0].body).toBe('wow this article shows the REAL truth that THE MAN is trying to hide from us')
+            expect(body.comment[0].article_id).toBe(4)
+        })
+    })
+
+    test("404 /api/articles/:article_id/comments with non-existent article should give a 404 Not Found",()=>{
+        const newComment = {
+            username: "rogersop",
+            body: "wow this article shows the REAL truth that THE MAN is trying to hide from us"
+        }
+        return request(app).post("/api/articles/6522/comments").expect(404).send(newComment)
+        .then(({body})=>{
+            expect(body.msg).toBe("Not Found")
+        })
+    })
+    
+    test("400 /api/articles/:article_id/comments with missing parts of the body should return 400 bad request",()=>{
+        const newComment = {
+            body: "wow this article shows the REAL truth that THE MAN is trying to hide from us"
+        }
+        return request(app).post("/api/articles/4/comments").expect(400).send(newComment)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+    test("400 /api/articles/:article_id/comments with invalid body additions should return 400 bad request",()=>{
+        const newComment = {
+            body: "wow this article shows the REAL truth that THE MAN is trying to hide from us",
+            potato:"aksdsa"
+        }
+        return request(app).post("/api/articles/4/comments").expect(400).send(newComment)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+    test("400 /api/articles/:article_id/comments with invalid username will return 400 bad request",()=>{
+        const newComment = {
+            username:"banana",
+            body: "wow this article shows the REAL truth that THE MAN is trying to hide from us"
+        }
+        return request(app).post("/api/articles/4/comments").expect(400).send(newComment)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+
 })

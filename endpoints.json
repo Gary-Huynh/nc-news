@@ -82,5 +82,22 @@
         }
       ]
     }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "post a new comment to an article",
+    "queries": [],
+    "format":{"username": "rogersop",
+    "body": "wow this article shows the REAL truth that THE MAN is trying to hide from us"},
+    "exampleResponse": {
+      "newComment": [{
+        "comment_id": 19,
+        "body": "wow this article shows the REAL truth that THE MAN is trying to hide from us",
+        "article_id": 4,
+        "author": "rogersop",
+        "votes": 0,
+        "created_at": "2023-06-27T10:19:23.541Z"
+      }
+      ]
+    }
   }
 }
