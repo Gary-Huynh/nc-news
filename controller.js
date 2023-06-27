@@ -1,6 +1,7 @@
 
 
-const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments, createArticleComment } = require("./model")
+const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments, createArticleComment, updateArticleVote  } = require("./model")
+
 
 const endpoints = require('./endpoints')
 const { checkArticleExists } = require("./db/seeds/utils")
@@ -48,6 +49,15 @@ exports.getAllArticles = (req, res, next)=>{
     .catch(next)
 }
 
+exports.patchArticleVote = (req, res, next)=>{
+    const article_id = req.params.article_id
+    Promise.all([checkArticleExists(article_id),updateArticleVote(req.params.article_id,req.body.inc_votes)])
+    .then((body)=>{
+        const updatedArticle = body[1]
+        res.status(200).send({article:updatedArticle})
+    })
+    .catch(next)
+}
 exports.postArticleComment = (req, res, next)=>{
 
 const article_id = req.params.article_id
@@ -58,7 +68,6 @@ const commentBody = req.body.body
     .then((returnedComment)=>{
         comment = returnedComment[1]
         res.status(201).send({comment})
-
     })
     .catch(next)
 }
