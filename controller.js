@@ -1,6 +1,6 @@
 
 
-const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments, createArticleComment, updateArticleVote, deleteSelectedComment  } = require("./model")
+const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments, createArticleComment, updateArticleVote, deleteSelectedComment, selectAllUsers  } = require("./model")
 
 
 const endpoints = require('./endpoints')
@@ -79,4 +79,13 @@ exports.deleteComment = (req, res, next)=>{
         res.status(204).send()
     })
     .catch(next)
+}
+
+exports.getAllUsers = (req, res, next)=>{
+    selectAllUsers()
+    .then((allUsers)=>{
+        res.status(200).send({allUsers})
+    })
+    .catch(next)
+
 }
