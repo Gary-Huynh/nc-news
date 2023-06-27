@@ -55,8 +55,9 @@ const username = req.body.username
 const commentBody = req.body.body
 
     Promise.all([checkArticleExists(article_id),createArticleComment(article_id, username, commentBody)])
-    .then((newComment)=>{
-        res.status(201).send(newComment[1])
+    .then((returnedComment)=>{
+        comment = returnedComment[1]
+        res.status(201).send({comment})
 
     })
     .catch(next)

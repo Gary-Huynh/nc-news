@@ -3,7 +3,7 @@ const db = require('../db/connection')
 const seed = require('../db/seeds/seed')
 const data = require('../db/data/test-data/index')
 const request = require('supertest')
-const { expect } = require('@jest/globals')
+
 afterAll(() => {
     return db.end()
    })
@@ -179,15 +179,14 @@ describe("POST /api/articles/:article_id/comments",()=>{
         }
         return request(app).post("/api/articles/4/comments").send(newComment).expect(201)
         .then(({body})=>{
-
-            expect(body[0].comment_id).toBe(19)
-            expect(body[0].author).toBe("rogersop")
-            expect(body[0].body).toBe('wow this article shows the REAL truth that THE MAN is trying to hide from us')
-            expect(body[0].article_id).toBe(4)
+            expect(body.comment[0].comment_id).toBe(19)
+            expect(body.comment[0].author).toBe("rogersop")
+            expect(body.comment[0].body).toBe('wow this article shows the REAL truth that THE MAN is trying to hide from us')
+            expect(body.comment[0].article_id).toBe(4)
         })
     })
 
-    test("404 /api/articles/:article_id/comments with an invalid article_id should give a 404 Not Found",()=>{
+    test("404 /api/articles/:article_id/comments with non-existent article should give a 404 Not Found",()=>{
         const newComment = {
             username: "rogersop",
             body: "wow this article shows the REAL truth that THE MAN is trying to hide from us"
