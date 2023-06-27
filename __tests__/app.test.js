@@ -13,6 +13,13 @@ beforeEach(() => {
 return seed(data)
 })
 
+describe("404: Not Found",()=>{
+
+    test("404: invalid path should return a 404 not found", ()=>{  
+
+        return request(app).get('/api/topicss').expect(404)
+    })
+})
 
 describe("GET /api/topics",()=>{
 
@@ -77,15 +84,6 @@ describe("GET /api/",()=>{
             }
 
         })
-    })
-})
-
-
-describe("404: Not Found",()=>{
-
-    test("404: invalid path should return a 404 not found", ()=>{  
-
-        return request(app).get('/api/topicss').expect(404)
     })
 })
 
@@ -170,6 +168,4 @@ describe("GET /api/articles?sort_by=votes / article_id/created_at/comment_count"
             expect(body.msg).toBe("Bad Request invalid sort_by")
         })
     })
-
-
 })

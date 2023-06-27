@@ -12,16 +12,11 @@ app.get('/api/topics', getAllTopics)
 
 app.get('/api/articles/:article_id',getSpecificArticle)
 
-
 app.get('/api/', getAllEndpoints)
 
 app.get('/api/articles/:article_id/comments',getArticleComments)
+
 app.get('/api/articles',getAllArticles)
-
-
-
-
-
 
 
 app.use((err, req, res, next) => {

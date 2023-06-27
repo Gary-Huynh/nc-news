@@ -51,4 +51,5 @@ exports.selectArticleComments = (article_id)=>{
         }
         return comments.rows
 
-    })}
+    })
+}

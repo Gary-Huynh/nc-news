@@ -20,10 +20,7 @@ exports.getAllTopics = (req, res, next)=>{
 exports.getAllEndpoints = (req, res, next)=>{
  
         res.status(200).send(endpoints)
-
 }
-
-
 
 exports.getSpecificArticle = (req,res,next)=>{
     selectSpecificArticle(req.params.article_id)
@@ -31,7 +28,6 @@ exports.getSpecificArticle = (req,res,next)=>{
         res.status(200).send({article})
     })
     .catch(next)
-
 }
 
 exports.getArticleComments = (req,res,next)=>{
