@@ -89,6 +89,41 @@ describe("404: Not Found",()=>{
     })
 })
 
+describe("GET /api/articles/:article_id/comments",()=>{
+    
+    test("200: /api/articles/:article_id/comments should get all comments for a specific article",()=>{
+
+        return request(app).get('/api/articles/1/comments').expect(200)
+        .then(({body})=>{
+            expect(body.comments.length).toBe(11)
+            expect(body.comments).toBeSortedBy("created_at",{descending:true})
+            body.comments.forEach((comment)=>{
+                expect(comment).toHaveProperty("comment_id", expect.any(Number));
+                expect(comment).toHaveProperty("body", expect.any(String));
+                expect(comment).toHaveProperty("article_id", expect.any(Number));
+                expect(comment).toHaveProperty("author", expect.any(String));
+                expect(comment).toHaveProperty("votes", expect.any(Number));
+                expect(comment).toHaveProperty("created_at", expect.any(String));
+
+            })
+        })
+
+    })
+
+    test("400: invalid article id should return bad request",()=>{
+        return request(app).get('/api/articles/banana/comments').expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+
+    test("404: searching for an article that doesnt exist should return not found",()=>{
+        return request(app).get('/api/articles/420/comments').expect(404)
+        .then(({body})=>{
+            expect(body.msg).toBe("No article with id 420 found")
+        })
+    })
+})
 
 describe("GET /api/articles",()=>{
 
