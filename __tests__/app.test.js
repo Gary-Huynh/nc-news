@@ -179,13 +179,38 @@ describe("PATCH /api/articles/:article_id",()=>{
         })
 
     })
+    test("200 /api/articles/:article_id should be able to change the vote total of an article even if negative",()=>{
+        return request(app).patch("/api/articles/2").send({inc_votes: -200}).expect(200)
+         .then(({body})=>{
+             expect(body[0].article_id).toBe(2)
+             expect(body[0].votes).toBe(-200)
+         })
+ 
+     })
     test("400 /api/articles/:article_id when given invalid body should return 400 bad request",()=>{
         return request(app).patch("/api/articles/2").send({potato:26}).expect(400)
         .then(({body})=>{
             expect(body.msg).toBe("Bad Request")
         })
     })
+    test("400 /api/articles/:article_id when given invalid body should return 400 bad request",()=>{
+        return request(app).patch("/api/articles/2").send({inc_votes:"banana"}).expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+    test("404 /api/articles/:article_id when given article_id is valid but doesnt match any article will return 404 not found",()=>{
+        return request(app).patch("/api/articles/420").send({inc_votes:25}).expect(404)
+        .then(({body})=>{
+            expect(body.msg).toBe("Not Found")
+        })
+    })
 })
+
+
+
+
+
 describe("POST /api/articles/:article_id/comments",()=>{
 
     test("201 /api/articles/:article_id/comments should add a comment about a specific article as long as properties are correct",()=>{

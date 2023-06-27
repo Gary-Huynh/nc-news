@@ -50,9 +50,11 @@ exports.getAllArticles = (req, res, next)=>{
 }
 
 exports.patchArticleVote = (req, res, next)=>{
-    updateArticleVote(req.params.article_id,req.body.inc_votes)
+    const article_id = req.params.article_id
+    Promise.all([checkArticleExists(article_id),updateArticleVote(req.params.article_id,req.body.inc_votes)])
     .then((body)=>{
-        res.status(200).send(body)
+        updatedArticle = body[1]
+        res.status(200).send(updatedArticle)
     })
     .catch(next)
 }
