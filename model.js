@@ -27,7 +27,6 @@ exports.selectSpecificArticle = (article_id)=>{
 }
 
 exports.selectAllArticles = (sort_by="created_at",topic,order = "DESC")=>{
-
     let query = "SELECT articles.author, title, articles.article_id, topic, articles.created_at,articles.votes,article_img_url, COUNT(comments.body) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id "
 
     let queryValues = []
@@ -39,20 +38,16 @@ exports.selectAllArticles = (sort_by="created_at",topic,order = "DESC")=>{
     if(!validOrder.includes(order)){
         return Promise.reject({status:400, msg:"Bad Request invalid order"})
     }
+
     if(topic){
         query += `WHERE topic = $1`
         queryValues.push(topic)
     }
-
+ 
     query += `GROUP BY articles.article_id ORDER BY ${sort_by} ${order};`
     return db.query(query,queryValues)
 
     .then((articles)=>{
-        if(!articles.rows[0]){
-
-            return Promise.reject({status:404,msg:(`No articles found. Please try a different search`)})
-        }
-
         return articles.rows
     })
 }

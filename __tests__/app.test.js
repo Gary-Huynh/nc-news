@@ -183,7 +183,14 @@ describe("GET /api/articles?topic=mitch / other topics are available",()=>{
     test("404: /api/articles?topic=banana should return a not found if topic does not exist in list of topics",()=>{
         return request(app).get("/api/articles?topic=banana").expect(404)
         .then(({body})=>{
-            expect(body.msg).toBe("No articles found. Please try a different search")
+            expect(body.msg).toBe("Not Found")
+        })
+    })
+    test("200: /api/articles?topic=paper should return an empty array as the topic exists but has no content",()=>{
+        return request(app).get("/api/articles?topic=paper").expect(200)
+        .then(({body})=>{
+
+            expect(body.articles.length).toBe(0)
         })
     })
 })
