@@ -41,16 +41,16 @@ exports.getArticleComments = (req,res,next)=>{
     .catch(next)
 }
 exports.getAllArticles = (req, res, next)=>{
-   const{sort_by,topic, order} = req.query
+   const{sort_by,topic, order, p, limit} = req.query
     if(topic){
-    Promise.all([checkTopicExists(topic),selectAllArticles(sort_by,topic,order)])
+    Promise.all([checkTopicExists(topic),selectAllArticles(sort_by,topic,order,p,limit)])
     .then((articles)=>{
         res.status(200).send({articles:articles[1]})
     })
     .catch(next)
     }
 
-    else {selectAllArticles(sort_by,topic,order)
+    else {selectAllArticles(sort_by,topic,order, p, limit)
         .then((articles)=>{
             res.status(200).send({articles})
         })
