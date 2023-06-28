@@ -26,15 +26,27 @@ exports.selectSpecificArticle = (article_id)=>{
  })
 }
 
-exports.selectAllArticles = (sort_by="created_at")=>{
+exports.selectAllArticles = (sort_by="created_at",topic,order = "DESC")=>{
+    let query = "SELECT articles.author, title, articles.article_id, topic, articles.created_at,articles.votes,article_img_url, COUNT(comments.body) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id "
 
-
+    let queryValues = []
     const validSortBy = ["votes","article_id","created_at","comment_count"]
     if(!validSortBy.includes(sort_by)){
         return Promise.reject({status:400, msg:"Bad Request invalid sort_by"})
     }
+    const validOrder = ["asc", "desc", "ASC", "DESC"]
+    if(!validOrder.includes(order)){
+        return Promise.reject({status:400, msg:"Bad Request invalid order"})
+    }
 
-    return db.query(`SELECT articles.author, title, articles.article_id, topic, articles.created_at,articles.votes,article_img_url, COUNT(comments.body) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id GROUP BY articles.article_id ORDER BY ${sort_by} DESC;`)
+    if(topic){
+        query += `WHERE topic = $1`
+        queryValues.push(topic)
+    }
+ 
+    query += `GROUP BY articles.article_id ORDER BY ${sort_by} ${order};`
+    return db.query(query,queryValues)
+
     .then((articles)=>{
         return articles.rows
     })
@@ -65,7 +77,6 @@ exports.updateArticleVote = (article_id,votes)=>{
 
  return db.query("UPDATE articles SET votes = $1 WHERE article_id = $2 RETURNING *;",[newVotes,article_id])
  .then((updatedArticle)=>{
-    // console.log(updatedArticle.rows[0],"here")
     return updatedArticle.rows[0]
  })
 })
