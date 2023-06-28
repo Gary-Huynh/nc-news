@@ -385,6 +385,13 @@ describe("PATCH /api/comments/:comment_id", ()=>{
             expect(body.votes).toBe(31)
         })
     })
+    test("200 /api/comments/:comment_id should update votes if given valid body even if value is negative",()=>{
+        return request(app).patch("/api/comments/2").send({inc_votes: -27}).expect(200)
+        .then(({body})=>{
+            expect(body.comment_id).toBe(2)
+            expect(body.votes).toBe(-13)
+        })
+    })
     test("400 /api/comments/:comment_id when given invalid body should return 400 bad request",()=>{
         return request(app).patch("/api/comments/2").send({banana:26}).expect(400)
         .then(({body})=>{
