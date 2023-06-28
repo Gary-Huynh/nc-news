@@ -123,3 +123,19 @@ return db.query("SELECT * FROM users WHERE username = $1;",[username])
 })
 
 }
+
+exports.updateCommentVote = (comment_id,votes)=>{
+    return db.query('SELECT votes FROM comments WHERE comment_id = $1;',[comment_id])
+    .then((resultVotes)=>{
+        if(typeof votes !== "number"){
+            return Promise.reject({status:400, msg:"Bad Request"})
+        }
+        const oldVotes = resultVotes.rows[0].votes
+        const newVotes = oldVotes + votes
+    return db.query('UPDATE comments SET votes = $1 WHERE comment_id = $2 RETURNING *;',[newVotes, comment_id])
+    })
+    .then((updatedComment)=>{
+        return updatedComment.rows[0]
+    })
+
+}

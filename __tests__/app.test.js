@@ -376,3 +376,31 @@ describe("GET /api/users/:username",()=>{
         })
     })
 })
+
+describe("PATCH /api/comments/:comment_id", ()=>{
+    test("200 /api/comments/:comment_id should update votes if given valid body",()=>{
+        return request(app).patch("/api/comments/2").send({inc_votes: 17}).expect(200)
+        .then(({body})=>{
+            expect(body.comment_id).toBe(2)
+            expect(body.votes).toBe(31)
+        })
+    })
+    test("400 /api/comments/:comment_id when given invalid body should return 400 bad request",()=>{
+        return request(app).patch("/api/comments/2").send({banana:26}).expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+    test("400 /api/comments/:comment_id when given invalid body should return 400 bad request",()=>{
+        return request(app).patch("/api/comments/2").send({inc_votes:"cornetto"}).expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+    test("404 /api/comments/:comment_id when given comment_id is valid but doesnt match any comments will return 404 not found",()=>{
+        return request(app).patch("/api/articles/420").send({inc_votes:25}).expect(404)
+        .then(({body})=>{
+            expect(body.msg).toBe("Not Found")
+        })
+    })
+})
