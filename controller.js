@@ -33,8 +33,8 @@ exports.getSpecificArticle = (req,res,next)=>{
 }
 
 exports.getArticleComments = (req,res,next)=>{
-
-    selectArticleComments(req.params.article_id)
+ const {p, limit} = req.query
+    selectArticleComments(req.params.article_id,p,limit)
     .then((comments)=>{
         res.status(200).send({comments})
     })

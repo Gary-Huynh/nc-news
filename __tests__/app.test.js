@@ -525,5 +525,29 @@ describe("GET /api/articles?limit=NUMBER",()=>{
     })
 })
 
-
-
+describe("GET /api/articles/:article_id/comments",()=>{
+    test("/api/articles/:article_id/comments?p=2 will get all the comments on page 2 of the article comments where the default limit is 10", ()=>{
+        return request(app).get("/api/articles/1/comments?p=2").expect(200)
+        .then(({body})=>{
+            expect(body.comments.length).toBeGreaterThan(0)
+        })
+    })
+    test("/api/articles/:article_id/comments?limit=5 will get 5 comments which is the given limit", ()=>{
+        return request(app).get("/api/articles/1/comments?limit=5").expect(200)
+        .then(({body})=>{
+            expect(body.comments.length).toBe(5)
+        })
+    })
+    test("400: /api/articles/:article_id/comments?limit=banana if given invalid limit number will return 400 bad request",()=>{
+        return request(app).get("/api/articles/:article_id/comments?limit=banana").expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+    test("400: /api/articles/:article_id/comments?p=banana if given invalid page input will return 400 bad request",()=>{
+        return request(app).get("/api/articles/:article_id/comments?p=banana").expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+})
