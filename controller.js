@@ -4,7 +4,7 @@ const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticle
 
 
 const endpoints = require('./endpoints')
-const { checkArticleExists } = require("./db/seeds/utils")
+const { checkArticleExists, checkTopicExists } = require("./db/seeds/utils")
 
 
 
@@ -41,13 +41,22 @@ exports.getArticleComments = (req,res,next)=>{
     .catch(next)
 }
 exports.getAllArticles = (req, res, next)=>{
-   const{sort_by} = req.query
-    selectAllArticles(sort_by)
+   const{sort_by,topic, order} = req.query
+    if(topic){
+    Promise.all([checkTopicExists(topic),selectAllArticles(sort_by,topic,order)])
     .then((articles)=>{
-        res.status(200).send({articles})
+        res.status(200).send({articles:articles[1]})
     })
     .catch(next)
+    }
+
+    else {selectAllArticles(sort_by,topic,order)
+        .then((articles)=>{
+            res.status(200).send({articles})
+        })
+    .catch(next)}
 }
+
 
 exports.patchArticleVote = (req, res, next)=>{
     const article_id = req.params.article_id

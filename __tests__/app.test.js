@@ -4,6 +4,7 @@ const seed = require('../db/seeds/seed')
 const data = require('../db/data/test-data/index')
 const request = require('supertest')
 const { expect } = require('@jest/globals')
+const { log } = require('console')
 afterAll(() => {
     return db.end()
    })
@@ -165,6 +166,46 @@ describe("GET /api/articles?sort_by=votes / article_id/created_at/comment_count"
         return request(app).get("/api/articles?sort_by=banana").expect(400)
         .then(({body})=>{
             expect(body.msg).toBe("Bad Request invalid sort_by")
+        })
+    })
+})
+
+describe("GET /api/articles?topic=mitch / other topics are available",()=>{
+    test("200: /api/articles?topic=mitch should return an array with all articles about the topic mitch",()=>{
+        return request(app).get("/api/articles?topic=mitch").expect(200)
+        .then(({body})=>{
+            expect(body.articles.length).toBe(12)
+            body.articles.forEach((article)=>{
+                expect(article.topic).toBe("mitch")
+            })
+        })
+    })
+    test("404: /api/articles?topic=banana should return a not found if topic does not exist in list of topics",()=>{
+        return request(app).get("/api/articles?topic=banana").expect(404)
+        .then(({body})=>{
+            expect(body.msg).toBe("Not Found")
+        })
+    })
+    test("200: /api/articles?topic=paper should return an empty array as the topic exists but has no content",()=>{
+        return request(app).get("/api/articles?topic=paper").expect(200)
+        .then(({body})=>{
+
+            expect(body.articles.length).toBe(0)
+        })
+    })
+})
+
+describe("GET /api/articles?order=asc / desc",()=>{
+    test("200: /api/articles?order=asc should return all articles in ascending order", ()=>{
+        return request(app).get("/api/articles?order=asc").expect(200)
+        .then(({body})=>{
+            expect(body.articles).toBeSortedBy("created_at",{ascending:true})
+        })
+    })
+    test("400: /api/articles?order=banana should return a 400 bad request as it is not a valid order",()=>{
+        return request(app).get("/api/articles?order=banana").expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request invalid order")
         })
     })
 })
