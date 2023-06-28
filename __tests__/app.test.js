@@ -272,7 +272,6 @@ describe("POST /api/articles/:article_id/comments",()=>{
         }
         return request(app).post("/api/articles/4/comments").send(newComment).expect(201)
         .then(({body})=>{
-            console.log(body)
             expect(body.comment.comment_id).toBe(19)
             expect(body.comment.author).toBe("rogersop")
             expect(body.comment.body).toBe('wow this article shows the REAL truth that THE MAN is trying to hide from us')
@@ -424,7 +423,6 @@ describe("POST /api/articles",()=>{
         }
     return request(app).post("/api/articles").send(article).expect(201)
     .then(({body})=>{
-        console.log(body)
         expect(body.newArticle).toEqual(expect.objectContaining(
             {
                 author:article.author,
@@ -459,7 +457,6 @@ describe("POST /api/articles",()=>{
         }
         return request(app).post("/api/articles").expect(201).send(newArticle)
         .then(({body})=>{
-            console.log(body)
             expect(body.newArticle).not.toHaveProperty("potato");
             expect(body.newArticle).toEqual(expect.objectContaining(
                 {
