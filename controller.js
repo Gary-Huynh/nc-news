@@ -1,10 +1,10 @@
 
 
-const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments, createArticleComment, updateArticleVote, deleteSelectedComment, selectAllUsers, selectSpecificUser  } = require("./model")
+const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments, createArticleComment, updateArticleVote, deleteSelectedComment, selectAllUsers, selectSpecificUser, updateCommentVote  } = require("./model")
 
 
 const endpoints = require('./endpoints')
-const { checkArticleExists, checkTopicExists } = require("./db/seeds/utils")
+const { checkArticleExists, checkTopicExists, checkCommentExists } = require("./db/seeds/utils")
 
 
 
@@ -105,4 +105,15 @@ exports.getSpecificUser = (req, res, next) =>{
         res.status(200).send({user})
     })
     .catch(next)
+}
+
+exports.patchCommentVote = (req, res ,next)=>{
+    const comment_id = req.params.comment_id
+    const votes = req.body.inc_votes
+    Promise.all([checkCommentExists(comment_id),updateCommentVote(comment_id,votes)])
+    .then((updatedComment)=>{
+        res.status(200).send(updatedComment[1])
+    })
+    .catch(next)
+
 }
