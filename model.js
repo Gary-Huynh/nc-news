@@ -139,3 +139,10 @@ exports.updateCommentVote = (comment_id,votes)=>{
     })
 
 }
+
+exports.createArticle = (body)=>{
+    return db.query('INSERT INTO articles(author,title,body,topic) VALUES($1,$2,$3,$4) RETURNING *;', [body.author, body.title, body.body, body.topic])
+    .then((newArticle)=>{
+       return newArticle.rows[0]
+    })
+}

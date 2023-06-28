@@ -1,6 +1,6 @@
 
 
-const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments, createArticleComment, updateArticleVote, deleteSelectedComment, selectAllUsers, selectSpecificUser, updateCommentVote  } = require("./model")
+const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments, createArticleComment, updateArticleVote, deleteSelectedComment, selectAllUsers, selectSpecificUser, updateCommentVote, createArticle  } = require("./model")
 
 
 const endpoints = require('./endpoints')
@@ -116,4 +116,13 @@ exports.patchCommentVote = (req, res ,next)=>{
     })
     .catch(next)
 
+}
+
+exports.postArticle = (req, res ,next)=>{
+
+    createArticle(req.body)
+    .then((newArticle)=>{
+        res.status(201).send({newArticle})
+    })
+    .catch(next)
 }

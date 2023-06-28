@@ -272,6 +272,7 @@ describe("POST /api/articles/:article_id/comments",()=>{
         }
         return request(app).post("/api/articles/4/comments").send(newComment).expect(201)
         .then(({body})=>{
+            console.log(body)
             expect(body.comment.comment_id).toBe(19)
             expect(body.comment.author).toBe("rogersop")
             expect(body.comment.body).toBe('wow this article shows the REAL truth that THE MAN is trying to hide from us')
@@ -408,6 +409,79 @@ describe("PATCH /api/comments/:comment_id", ()=>{
         return request(app).patch("/api/articles/420").send({inc_votes:25}).expect(404)
         .then(({body})=>{
             expect(body.msg).toBe("Not Found")
+        })
+    })
+})
+
+describe("POST /api/articles",()=>{
+    test("201 /api/articles should add a new article to the articles table if body is valid",()=>{
+        const article = 
+        {
+            author:"butter_bridge",
+            title:"Trees are the enemy and let ME tell you why",
+            body:"The undeniable truth is that trees are and always have been the enemy. Did you know what 100% of people who have died have their deaths indirectly if not directly related to trees, YES! you read that correctly 100%. You see dear reader trees produce something called \"oxygen\" and it is an matter of fact that 100% of people who are dead today have at one point ingested this oxygen so i'll leave it up to you readers, if it is a FACT that 100% of people who have died from all of history have ingested this oxygen are the trees killing us? ",
+            topic: "trees"
+        }
+    return request(app).post("/api/articles").send(article).expect(201)
+    .then(({body})=>{
+        console.log(body)
+        expect(body.newArticle).toEqual(expect.objectContaining(
+            {
+                author:article.author,
+                title:article.title,
+                body:article.body,
+                topic:article.topic
+            }
+        ))
+        expect(body.newArticle).toHaveProperty("article_id", expect.any(Number));
+        expect(body.newArticle).toHaveProperty("created_at", expect.any(String));
+        expect(body.newArticle).toHaveProperty("votes", expect.any(Number));
+        expect(body.newArticle).toHaveProperty("article_img_url", expect.any(String));
+    })
+    })
+    test("400 /api/articles with missing parts of the body should return 400 bad request",()=>{
+        const newArticle = {
+            topic: "trees"
+        }
+        return request(app).post("/api/articles").expect(400).send(newArticle)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+    test("201 /api/articles with invalid body additions will have the additions ignored",()=>{
+        const newArticle = {
+            author:"butter_bridge",
+            title:"new fruits on the horizon",
+            body: "some random body here",
+            topic:"trees",
+            potato:"chips"
+        
+        }
+        return request(app).post("/api/articles").expect(201).send(newArticle)
+        .then(({body})=>{
+            console.log(body)
+            expect(body.newArticle).not.toHaveProperty("potato");
+            expect(body.newArticle).toEqual(expect.objectContaining(
+                {
+                    author:newArticle.author,
+                    title:newArticle.title,
+                    body:newArticle.body,
+                    topic:newArticle.topic
+                }
+            ))
+
+        })
+    })
+    test("400 /api/articles with invalid username will return 400 bad request",()=>{
+        const newArticle = {
+            author:"banana",
+            title:"new fruits on the horizon",
+            body: "some random body here",
+            topic:"trees"
+        }
+        return request(app).post("/api/articles/4/comments").expect(400).send(newArticle)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
         })
     })
 })
