@@ -1,6 +1,6 @@
 
 
-const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments, createArticleComment, updateArticleVote, deleteSelectedComment, selectAllUsers  } = require("./model")
+const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments, createArticleComment, updateArticleVote, deleteSelectedComment, selectAllUsers, selectSpecificUser  } = require("./model")
 
 
 const endpoints = require('./endpoints')
@@ -97,4 +97,12 @@ exports.getAllUsers = (req, res, next)=>{
     })
     .catch(next)
 
+}
+exports.getSpecificUser = (req, res, next) =>{
+    const username = req.params.username
+    selectSpecificUser(username)
+    .then((user)=>{
+        res.status(200).send({user})
+    })
+    .catch(next)
 }

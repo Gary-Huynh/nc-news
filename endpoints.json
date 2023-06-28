@@ -24,7 +24,7 @@
     "queries": [],
     "format":{},
     "exampleResponse": {
-      "article": [
+      "article": 
         {
           "title": "Seafood substitutions are increasing",
           "topic": "cooking",
@@ -34,7 +34,7 @@
           "votes": 0,
           "comment_count": "6"
         }
-      ]
+      
     }
   },
   "GET /api/articles": {

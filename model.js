@@ -111,3 +111,15 @@ return db.query("SELECT * FROM users;")
 })
 
 }
+
+exports.selectSpecificUser = (username)=>{
+
+return db.query("SELECT * FROM users WHERE username = $1;",[username])
+.then((body)=>{
+    if(!body.rows[0]){
+        return Promise.reject({status:404, msg:"Not Found"})
+    }
+    return body.rows[0]
+})
+
+}

@@ -356,3 +356,23 @@ describe("GET /api/users",()=>{
         })
     })
 })
+
+describe("GET /api/users/:username",()=>{
+    test("200 /api/users/:username should give an object of a specific user",()=>{
+        return request(app).get("/api/users/icellusedkars").expect(200)
+        .then(({body})=>{
+            expect(body.user).toEqual(expect.objectContaining({
+                username:"icellusedkars",
+                name:"sam",
+                avatar_url:"https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
+            }))
+        })
+
+    })
+    test("404 /api/users/:username if the user does not exist should return a not found",()=>{
+        return request(app).get("/api/users/banana243!!").expect(404)
+        .then(({body})=>{
+            expect(body.msg).toBe("Not Found")
+        })
+    })
+})
