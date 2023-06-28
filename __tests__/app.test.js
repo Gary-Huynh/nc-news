@@ -40,16 +40,16 @@ describe("GET /api/articles/:article_id",()=>{
     test("200: should return the article with the specified id",()=>{
         return request(app).get('/api/articles/5').expect(200)
         .then(({body})=>{
-            expect(body.article.length).toBeGreaterThan(0)
-            expect(body.article[0].article_id).toBe(5)
-            expect(body.article[0]).toHaveProperty("title", expect.any(String));
-            expect(body.article[0]).toHaveProperty("topic", expect.any(String));
-            expect(body.article[0]).toHaveProperty("author", expect.any(String));
-            expect(body.article[0]).toHaveProperty("body", expect.any(String));
-            expect(body.article[0]).toHaveProperty("created_at", expect.any(String));
-            expect(body.article[0]).toHaveProperty("votes", expect.any(Number));
-            expect(body.article[0]).toHaveProperty("article_img_url", expect.any(String));
-            expect(body.article[0]).toHaveProperty("comment_count", expect.any(String));  
+            expect(body.article.article_id).toBe(5)
+            expect(body.article).toEqual(expect.objectContaining({
+                title:"UNCOVERED: catspiracy to bring down democracy",
+                topic:"cats",
+                author: "rogersop", 
+                body:"Bastet walks amongst us, and the cats are taking arms!", 
+                created_at:"2020-08-03T13:14:00.000Z",
+                votes:0,
+                article_img_url:"https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+            }))
         })
     })
     test("400: invalid article id should return bad request",()=>{
@@ -63,6 +63,14 @@ describe("GET /api/articles/:article_id",()=>{
         return request(app).get('/api/articles/900').expect(404)
         .then(({body})=>{
             expect(body.msg).toBe("No article with id 900 found")
+        })
+    })
+    test("200: should now also have comment count in addition to previous properties",()=>{
+        return request(app).get('/api/articles/5').expect(200)
+        .then(({body})=>{
+            expect(body.article.article_id).toBe(5)
+            expect(body.article).toEqual(expect.objectContaining({comment_count:"2"}));
+
         })
     })
     

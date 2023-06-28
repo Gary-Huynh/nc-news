@@ -22,7 +22,7 @@ exports.selectSpecificArticle = (article_id)=>{
 
         return Promise.reject({status:404, msg:(`No article with id ${article_id} found`)})
     }
-    return article.rows
+    return article.rows[0]
  })
 }
 
