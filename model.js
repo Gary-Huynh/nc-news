@@ -65,8 +65,25 @@ exports.selectAllArticles = (sort_by="created_at",topic,order = "DESC",p , limit
 
 
 
-exports.selectArticleComments = (article_id)=>{
-    return db.query("SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC",[article_id])
+exports.selectArticleComments = (article_id,p,limit)=>{
+
+
+    let query = 'SELECT * FROM comments WHERE article_id = $1'
+    let queryValues = []
+    queryValues.push(article_id)
+    query += ' ORDER BY created_at DESC'
+    if(limit){
+        query += ' LIMIT $2'
+        queryValues.push(limit)
+    }
+    if(p){
+        let limit = 10
+        let pageNum = (p-1)*10
+        query+= ' LIMIT $2 OFFSET $3'
+        queryValues.push(limit, pageNum)
+    }
+    return db.query(query,queryValues)
+
     .then((comments)=>{
 
         if(!comments.rows[0]){
