@@ -218,7 +218,6 @@ describe("GET /api/articles?order=asc / desc",()=>{
     })
 })
 
-
 describe("PATCH /api/articles/:article_id",()=>{
 
     test("200 /api/articles/:article_id should be able to change the vote total of an article",()=>{
@@ -482,3 +481,49 @@ describe("POST /api/articles",()=>{
         })
     })
 })
+
+
+describe("GET /api/articles?p=2", ()=>{
+    test("200: /api/articles?p=2 should return all articles on page 2 with a default limit 10",()=>{
+        return request(app).get("/api/articles?p=2").expect(200)
+        .then(({body})=>{
+            expect(body.articles.length).toBeGreaterThan(2)
+        })
+    })
+    test("200: /api/articles?p=1 should return all articles on page 1 with a default limit 10",()=>{
+        return request(app).get("/api/articles?p=1").expect(200)
+        .then(({body})=>{
+            expect(body.articles.length).toBe(10)
+        })
+    })
+    test("400: /api/articles?p=banana if given invalid page number will return 400 bad request",()=>{
+        return request(app).get("/api/articles?p=banana").expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+    test("200: /api/articles?p=200 should return 200 ok with an empty array since although there is no content on page 200 it is still a valid input",()=>{
+        return request(app).get("/api/articles?p=200").expect(200)
+        .then(({body})=>{
+            expect(body.articles).toEqual([])
+        })
+    })
+})
+
+describe("GET /api/articles?limit=NUMBER",()=>{
+    test("/api/articles?limit=5 should return 5 articles in an array",()=>{
+        return request(app).get("/api/articles?limit=5").expect(200)
+        .then(({body})=>{
+            expect(body.articles.length).toBe(5)
+        })
+    })
+    test("400: /api/articles?limit=banana if given invalid limit number will return 400 bad request",()=>{
+        return request(app).get("/api/articles?limit=banana").expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+})
+
+
+

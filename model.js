@@ -26,9 +26,8 @@ exports.selectSpecificArticle = (article_id)=>{
  })
 }
 
-exports.selectAllArticles = (sort_by="created_at",topic,order = "DESC")=>{
+exports.selectAllArticles = (sort_by="created_at",topic,order = "DESC",p , limit)=>{
     let query = "SELECT articles.author, title, articles.article_id, topic, articles.created_at,articles.votes,article_img_url, COUNT(comments.body) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id "
-
     let queryValues = []
     const validSortBy = ["votes","article_id","created_at","comment_count"]
     if(!validSortBy.includes(sort_by)){
@@ -43,8 +42,20 @@ exports.selectAllArticles = (sort_by="created_at",topic,order = "DESC")=>{
         query += `WHERE topic = $1`
         queryValues.push(topic)
     }
- 
-    query += `GROUP BY articles.article_id ORDER BY ${sort_by} ${order};`
+
+    query += `GROUP BY articles.article_id ORDER BY ${sort_by} ${order}`
+
+    if(p){
+        let limit = 10
+        let pageNum = (p-1)*10
+        query+= ' LIMIT $1 OFFSET $2'
+        queryValues.push(limit,pageNum)
+    }
+
+    if(limit){
+        query += ' LIMIT $1'
+        queryValues.push(limit)
+    }
     return db.query(query,queryValues)
 
     .then((articles)=>{
