@@ -1,6 +1,6 @@
 
 
-const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments, createArticleComment, updateArticleVote, deleteSelectedComment, selectAllUsers, selectSpecificUser, updateCommentVote, createArticle, createTopic  } = require("./model")
+const { selectAllTopics, selectSpecificArticle, selectAllArticles, selectArticleComments, createArticleComment, updateArticleVote, deleteSelectedComment, selectAllUsers, selectSpecificUser, updateCommentVote, createArticle, createTopic, deleteSelectedArticle  } = require("./model")
 
 
 const endpoints = require('./endpoints')
@@ -131,6 +131,15 @@ exports.postTopic = (req, res, next)=>{
     createTopic(req.body)
     .then((newTopic)=>{
         res.status(201).send({newTopic})
+    })
+    .catch(next)
+}
+
+exports.deleteArticle = (req, res, next)=>{
+    
+    deleteSelectedArticle(req.params.article_id)
+    .then(()=>{
+        res.status(204).send()
     })
     .catch(next)
 }

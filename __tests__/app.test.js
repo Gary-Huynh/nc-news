@@ -580,3 +580,23 @@ describe("POST /api/topics",()=>{
         })
     })
 })
+
+describe("DELETE /api/articles/:article_id",()=>{
+
+    test("204: /api/articles/:article_id should delete an article if given valid article_id",()=>{
+        return request(app).delete("/api/articles/5").expect(204)
+    })
+    test("404: /api/articles/:article_id should return a 404 if article_id is a valid number but does not have a corresponding article",()=>{
+        return request(app).delete("/api/articles/420").expect(404)
+        .then(({body})=>{
+            expect(body.msg).toBe("Not Found")
+        })
+    })
+    test("400: /api/articles/:article_id should return a 400 if invalid article_id is given",()=>{
+        return request(app).delete("/api/articles/banana").expect(400)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+
+})
