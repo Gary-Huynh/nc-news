@@ -202,6 +202,12 @@
         "description": "farmers having fun"
     }
   
+  },
+  "DELETE /api/article/:article_id": {
+    "description": "deletes a article from the article table as well as any associated comments",
+    "queries": [],
+    "format":{},
+    "exampleResponse": {"status":204}
   }
 }
 
