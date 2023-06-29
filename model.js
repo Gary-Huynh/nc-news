@@ -174,3 +174,11 @@ exports.createArticle = (body)=>{
        return newArticle.rows[0]
     })
 }
+
+exports.createTopic = (body)=>{
+    return db.query('INSERT INTO topics(slug,description) VALUES($1,$2) RETURNING *;', [body.slug,body.description])
+    .then((newArticle)=>{
+       return newArticle.rows[0]
+    })
+
+}

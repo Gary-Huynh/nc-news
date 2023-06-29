@@ -551,3 +551,32 @@ describe("GET /api/articles/:article_id/comments",()=>{
         })
     })
 })
+
+describe("POST /api/topics",()=>{
+    test("201 /api/articles should add a new topic to the topic table if given body is valid",()=>{
+        const topic = 
+        {
+            "slug": "farmers",
+            "description": "all sunshine and crop circles"
+        }
+    return request(app).post("/api/topics").send(topic).expect(201)
+    .then(({body})=>{
+        expect(body.newTopic).toEqual(expect.objectContaining(
+            {
+                slug:topic.slug,
+                description:topic.description
+            }
+        ))
+    })
+    })
+
+    test("400 /api/topics with missing parts of the body should return 400 bad request",()=>{
+        const newTopic = {
+            "slug": "trees"
+        }
+        return request(app).post("/api/topics").expect(400).send(newTopic)
+        .then(({body})=>{
+            expect(body.msg).toBe("Bad Request")
+        })
+    })
+})
