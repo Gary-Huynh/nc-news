@@ -2,6 +2,10 @@
 
 This project is used to simulate a news website with functionality such as bringing up articles, browsing comments, looking for users, adding/changing/deleting articles, comments, topics and includes a voting system for both articles and comments.
 
+## Link to hosted site
+
+https://nc-news-8ykn.onrender.com/api/articles/?p=3
+
 ## Installation
 First fork the repository then clone the project into your local machine and install the required dependencies.
 
@@ -54,5 +58,4 @@ after please run npm test to check whether all functionality is working as inten
 The endpoints.json file should give a brief overview of working endpoints and their functionality 
 
 ### Recommended minimum Postgres 14.7 and Node.js 19.8.1 
-
 
