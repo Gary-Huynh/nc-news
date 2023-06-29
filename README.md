@@ -3,7 +3,7 @@
 This project is used to simulate a news website with functionality such as bringing up articles, browsing comments, looking for users, adding/changing/deleting articles, comments, topics and includes a voting system for both articles and comments.
 
 ## Installation
-First clone the project into your local machine and then install the required dependencies.
+First fork the repository then clone the project into your local machine and install the required dependencies.
 
 ### To run this project with full functionality including testing you will need to install the following:
 
@@ -30,7 +30,7 @@ husky - https://www.npmjs.com/package/husky
 
 ### For initial setup after installing required dependencies please do the following
 
-create the proper environment files in the root including 
+Create the proper environment files in the root including:
 
 .env.development
 
@@ -39,7 +39,9 @@ create the proper environment files in the root including
 .env.test
 
 
-each of which should contain the appropriate paths and then run the following commands.
+Each environment should contain the appropriate paths, for example "PGDATABASE=nc_news"
+
+Now run the following commands:
 
 npm run setup-dbs
 
