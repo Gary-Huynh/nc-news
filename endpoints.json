@@ -39,7 +39,7 @@
   },
   "GET /api/articles": {
     "description": "get all articles as well as comment_count",
-    "queries": ["author", "topic", "sort_by", "order"],
+    "queries": ["author", "topic", "sort_by", "order","limit","p"],
     "format":{},
     "exampleResponse": {
       "article": [
@@ -68,7 +68,7 @@
   },
   "GET /api/articles/:article_id/comments": {
     "description": "get all comments for specific article",
-    "queries": [],
+    "queries": ["limit","p"],
     "format":{},
     "exampleResponse":
      {
