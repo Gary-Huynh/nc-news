@@ -77,11 +77,11 @@ describe("GET /api/articles/:article_id",()=>{
     
 })
 
-describe("GET /api/",()=>{
+describe("GET /api",()=>{
 
-    test("200: /api/ should return an object with descriptions of all valid endpoints",()=>{
+    test("200: /api should return an object with descriptions of all valid endpoints",()=>{
 
-        return request(app).get('/api/').expect(200)
+        return request(app).get('/api').expect(200)
         .then(({body})=>{
             expect(Object.keys(body).length).toBeGreaterThan(0)
             for(const keys in body){
