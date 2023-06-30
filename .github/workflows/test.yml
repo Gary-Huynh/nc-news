@@ -12,4 +12,4 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Say Hello!
-              run: echo "hello from my pipeline"
+              run: echo 'hello from my pipeline'
