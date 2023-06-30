@@ -26,8 +26,8 @@ jobs:
                 node-version: 18
 
             - name: Use PostgreSQL
-                uses: harmon758/postgresql-action@v1
-                with:
+              uses: harmon758/postgresql-action@v1
+              with:
                 postgresql db: 'my_db'
                 postgresql user: 'test_user'
                 postgresql password: 'test_password'
