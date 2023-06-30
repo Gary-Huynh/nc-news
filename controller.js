@@ -43,7 +43,7 @@ exports.getAllArticles = (req, res, next)=>{
 
     Promise.all([checkTopicExists(topic),selectAllArticles(sort_by,topic,order,p,limit)])
     .then((articles)=>{
-        console.log(articles[1])
+
         res.status(200).send({articles:articles[1]})
     })
     .catch(next)
