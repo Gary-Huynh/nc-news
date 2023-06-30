@@ -13,3 +13,27 @@ jobs:
         steps:
             - name: Say Hello!
               run: echo 'hello from my pipeline'
+
+
+    test:
+        runs-on: ubuntu_latest
+        steps:
+            - name: Checkout and clone repo
+              uses: actions/checkout@v3
+            - name: Use Node.js
+              uses: actions/setup-node@v3
+              with:
+                node-version: 18
+
+            - name: Use PostgreSQL
+                uses: harmon758/postgresql-action@v1
+                with:
+                postgresql db: 'my_db'
+                postgresql user: 'test_user'
+                postgresql password: 'test_password'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run tests
+              run: PGDATABASE=my_db PGUSER=test_user PGPASSWORD=test_password npm t
