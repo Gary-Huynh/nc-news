@@ -600,3 +600,24 @@ describe("DELETE /api/articles/:article_id",()=>{
     })
 
 })
+
+
+describe("POST /api/users",()=>{
+    test("201 /api/users should add a new user to the user table if given body is valid",()=>{
+        const user = 
+        {
+            "username": "JJJJ",
+            "name": "Jess",
+            "avatar_url": "randomurl.com"
+        }
+    return request(app).post("/api/users").send(user).expect(201)
+    .then(({body})=>{
+        expect(body.newUser).toEqual(expect.objectContaining(
+            {
+                username:user.username,
+                name:user.name,
+                avatar_url:user.avatar_url
+            }
+        ))
+    })
+    })})

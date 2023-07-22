@@ -192,3 +192,12 @@ exports.deleteSelectedArticle = (article_id)=>{
         return result.rows[0]
     })
 }
+
+exports.addUser =(newUser)=>{
+
+        return db.query(`INSERT INTO users(username,name,avatar_url) VALUES($1,$2,$3) RETURNING *;`,[newUser.username, newUser.name, newUser.avatar_url])
+        .then((body)=>{
+
+            return body.rows[0]
+         })
+}
