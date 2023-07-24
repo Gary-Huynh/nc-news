@@ -39,6 +39,7 @@ exports.selectAllArticles = (sort_by="created_at",topic,order = "DESC",p , limit
     }
 
     if(topic){
+
         query += `WHERE topic = $1`
         queryValues.push(topic)
     }

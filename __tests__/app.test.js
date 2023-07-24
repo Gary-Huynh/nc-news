@@ -3,7 +3,6 @@ const db = require('../db/connection')
 const seed = require('../db/seeds/seed')
 const data = require('../db/data/test-data/index')
 const request = require('supertest')
-
 afterAll(() => {
     return db.end()
    })
@@ -404,7 +403,7 @@ describe("PATCH /api/comments/:comment_id", ()=>{
         })
     })
     test("404 /api/comments/:comment_id when given comment_id is valid but doesnt match any comments will return 404 not found",()=>{
-        return request(app).patch("/api/articles/420").send({inc_votes:25}).expect(404)
+        return request(app).patch("/api/comments/420").send({inc_votes:25}).expect(404)
         .then(({body})=>{
             expect(body.msg).toBe("Not Found")
         })
